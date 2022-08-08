@@ -5,27 +5,17 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:sauceman_chef/Order%20history/booking%20history.dart';
-import 'package:sauceman_chef/Order%20history/cancelled%20order.dart';
-import 'package:sauceman_chef/Order%20history/completed%20order.dart';
 import 'package:sauceman_chef/Reviews%20and%20Rating/rating%20and%20reviews.dart';
 import 'package:sauceman_chef/calender/date.dart';
 import 'package:sauceman_chef/calender/set%20leave.dart';
-import 'package:sauceman_chef/code.dart';
-import 'package:roundcheckbox/roundcheckbox.dart';
 import 'package:sauceman_chef/earnings%20&%20payouts/earnings%20n%20payout.dart';
-import 'package:sauceman_chef/earnings%20&%20payouts/earnings.dart';
-import 'package:sauceman_chef/earnings%20&%20payouts/payouts.dart';
 import 'package:sauceman_chef/feed/bestdishes.dart';
 import 'package:sauceman_chef/feed/chef_details.dart';
 import 'package:sauceman_chef/feed/document_details.dart';
 import 'package:sauceman_chef/help%20&%20support/recent%20service.dart';
 import 'package:sauceman_chef/totalsale.dart';
-import 'package:slider_button/slider_button.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'dart:math' as math;
-
-
-
 import 'accepted.dart';
 import 'offline.dart';
 import 'tab1/occassion.dart';
@@ -53,8 +43,9 @@ class _ProfileState extends State<Profile> {
     const Page1(),
     const Page2(),
     const Page3(),
+
   ];
-  bool status = false;
+  bool status = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -139,9 +130,9 @@ class _Page1State extends State<Page1> {
                       activeText: "Online",
                       inactiveText: "Offline",
                       value: status,
-                      valueFontSize: 10.0,
-                      width: 80,
-                      height: 30,
+                      valueFontSize: 5.0,
+                      width: 60,
+                      height: 25,
                       borderRadius: 20.0,
                       showOnOff: false,
                       onToggle: (val){
@@ -155,6 +146,7 @@ class _Page1State extends State<Page1> {
                       inactiveColor: Colors.white,
                       inactiveSwitchBorder: Border.all(color: Colors.grey),
                       inactiveTextColor: Colors.grey,
+                      activeTextColor: Colors.white,
                     ),
                   ),
                   Container(
