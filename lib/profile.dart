@@ -27,6 +27,7 @@ import 'dart:math' as math;
 
 
 import 'accepted.dart';
+import 'offline.dart';
 import 'tab1/occassion.dart';
 import 'ongoing.dart';
 
@@ -48,12 +49,10 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   int pageIndex = 0;
-
   final pages = [
     const Page1(),
     const Page2(),
     const Page3(),
-
   ];
   bool status = false;
   @override
@@ -62,103 +61,47 @@ class _ProfileState extends State<Profile> {
       resizeToAvoidBottomInset: false,
       body: pages[pageIndex],
       bottomNavigationBar: buildMyNavBar(context),
-      drawerScrimColor: Colors.black,
+      //drawerScrimColor: Colors.grey,
     );
   }
-  Container buildMyNavBar(BuildContext context) {
-
+  Container buildMyNavBar(BuildContext context)
+  {
     return Container(
-      height: 55,
-      decoration: const BoxDecoration(
+      height: 50,
         color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(0),
-          topRight: Radius.circular(0),
-        ),
-      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Padding(
-            padding: EdgeInsets.only(right:0),
-          child:Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            //crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              GestureDetector(
-                onTap: (){
-                  setState(() {
-                    pageIndex = 0;
-                  });
-                },
-                child: Image.asset("assets/bnb/img.png", height: 20,),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 5, bottom: 10),
-                child: Text("Bookings", style: TextStyle(fontSize: 10, color: Colors.grey),),
-              )
-            ],
-          ),
-    ),
-         /* IconButton(
-            enableFeedback: false,
+         IconButton(
             onPressed: () {
               setState(() {
                 pageIndex = 0;
               });
             },
-            icon: pageIndex == 0
-                ? const Icon(
-              Icons.collections_bookmark_outlined,
-              color: Colors.black,
-              size: 35,
-
-            )
-                :  Icon(
-              Icons.collections_bookmark_outlined,
-              color: Colors.grey,
-              size: 35,
-              semanticLabel: "Bookings",
-            ),
+            icon:  pageIndex == 0
+                ? Image.asset("assets/bnb/booking.png", height: 50, color: Colors.black,)
+                : Image.asset("assets/bnb/booking.png", height: 50, color: Colors.grey,)
           ),
-          */
-        Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            GestureDetector(
-              onTap: (){
+          IconButton(
+              onPressed: () {
                 setState(() {
                   pageIndex = 1;
                 });
               },
-              child: Image.asset("assets/bnb/img_1.png", height: 20,),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 5, bottom: 10),
-              child: Text("Insight", style: TextStyle(fontSize: 10, color: Colors.grey),),
-            )
-          ],
-        ),
-          Container(
-            //alignment: Alignment.bottomCenter,
-            child:Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                GestureDetector(
-                  onTap: (){
-                    setState(() {
-                      pageIndex = 2;
-                    });
-                  },
-                  child: Image.asset("assets/bnb/img_2.png", height: 20,),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 5, bottom: 10),
-                  child: Text("More", style: TextStyle(fontSize: 10, color: Colors.grey),),
-                )
-              ],
-            ),
-          )
+              icon:  pageIndex == 1
+                  ? Image.asset("assets/bnb/img_3.png", height: 70, color: Colors.black,)
+                  : Image.asset("assets/bnb/img_3.png", height: 60, color: Colors.grey,)
+          ),
+          IconButton(
+              onPressed: () {
+                setState(() {
+                  pageIndex = 2;
+                });
+              },
+              icon:  pageIndex == 2
+                  ? Image.asset("assets/bnb/img_4.png", height: 60, color: Colors.black,)
+                  : Image.asset("assets/bnb/img_4.png", height: 60, color: Colors.grey,)
+          ),
         ],
       ),
     );
@@ -173,12 +116,15 @@ class Page1 extends StatefulWidget {
 }
 
 class _Page1State extends State<Page1> {
-  bool status= false;
+  bool status= true;
+  final List<String> entries = <String>[];
+  final List<String> name = <String>['All','Today','Tomorrow','This week','all'];
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
-      child: new Scaffold(
+      child: Scaffold(
         body: Column(
           children: [
             Container(
@@ -197,11 +143,11 @@ class _Page1State extends State<Page1> {
                       width: 80,
                       height: 30,
                       borderRadius: 20.0,
-                      showOnOff: true,
-                      onToggle: (val) {
-                        setState(() {
-                          status = val;
-                        });
+                      showOnOff: false,
+                      onToggle: (val){
+                        Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => Offline()));
                       },
                       activeColor: Colors.green,
                       activeToggleColor: Colors.white,
@@ -251,475 +197,206 @@ class _Page1State extends State<Page1> {
                 children: [
               Stack(
               children: [
-                  SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child:
                     Column(
                       children: [
-                        Container(
-                          alignment: Alignment.topLeft,
-                          height: 40,
-                          child: ListView(
+                         Container(
+                         alignment: Alignment.topLeft,
+                           height: 40,
+                         child: ListView(
                             shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(top: 15, left: 15),
-                                child: Container(
-                                  padding: EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
-                                  decoration: BoxDecoration(
+                             scrollDirection: Axis.horizontal,
+                           children: [
+                            Padding(
+                               padding: EdgeInsets.only(top: 15, left: 15),
+                             child: Container(
+                               padding: EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
+                               decoration: BoxDecoration(
                                       border: Border.all(
-                                        color: Color(0xFFEFC55C),
-
-                                      ),
-                                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                                      color: Color(0xFFFFF8EB)
-                                  ),
-                                  child: Text("All",
-                                    style: TextStyle(fontSize: 12, color: Colors.black, fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(top: 15, left: 5),
-                                child: Container(
-                                  padding: EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.grey,
+                                       color: Color(0xFFEFC55C),
 
                                     ),
                                     borderRadius: BorderRadius.all(Radius.circular(20)),
-                                    //color: Color(0xFFFFF8EB)
-                                  ),
-                                  child: Text("Today",
-                                    style: TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(top: 15, left: 5),
-                                child: Container(
-                                  padding: EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.grey
-                                    ),
-                                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                                    //color: Color(0xFFFFF8EB)
-                                  ),
-                                  child: Text("This Week",
-                                    style: TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(top: 15, left: 5),
-                                child: Container(
-                                  padding: EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.grey
-                                    ),
-                                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                                    //color: Color(0xFFFFF8EB)
-                                  ),
-                                  child: Text("This Month",
-                                    style: TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        ListView(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(top: 0, left: 15, right: 15),
-                              child: Container(
-                                //height: MediaQuery.of(context).size.height/5.5,
-                                //width: MediaQuery.of(context).size.width/1,
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.grey,
-                                      width: 0.5,
-                                    ),
-                                    borderRadius: BorderRadius.all(Radius.circular(10))
-                                ),
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 10, left: 13),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text("Customer Name",
-                                            style: TextStyle( fontSize: 14, fontWeight: FontWeight.bold),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(right: 10),
-                                            child: Text("Today", style: TextStyle(fontSize:12,color: Colors.grey),),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 10),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Padding(
-                                            padding: EdgeInsets.only(left: 13),
-                                            child: Text("Usmanpura, Ahmedabad, Gujarat",style: TextStyle(fontSize:12,color: Colors.grey)),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(right: 10),
-                                            child: Text("12:30 PM", style: TextStyle(color: Colors.black, fontSize: 12),),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 13, right: 13, top: 5),
-                                      child: Divider(
-                                        color: Colors.grey,
-                                        thickness: 0.5,
-                                      ),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsets.only(left: 10,),
-                                          child: Image.asset("assets/images/occassion.png",
-                                            height: MediaQuery.of(context).size.height/17,
-                                            width: MediaQuery.of(context).size.width/5,
-                                          ),
-                                        ),
+                                     color: Color(0xFFFFF8EB)
+                                   ),
+                                   child: Text("All",
+                                     style: TextStyle(fontSize: 12, color: Colors.black, fontWeight: FontWeight.bold),
+                                   ),
+                                 ),
+                               ),
+                               Padding(
+                                 padding: EdgeInsets.only(top: 15, left: 5),
+                                 child: Container(
+                                   padding: EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
+                                   decoration: BoxDecoration(
+                                     border: Border.all(
+                                       color: Colors.grey,
 
-                                        IconButton(
-                                            icon: Icon(Icons.arrow_forward_ios_outlined, size: 20, color: Colors.black,),
-                                            onPressed: () {  Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                    builder: (context) => Accepted())); }
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                                     ),
+                                     borderRadius: BorderRadius.all(Radius.circular(20)),
+                                     //color: Color(0xFFFFF8EB)
+                                   ),
+                                   child: Text("Today",
+                                     style: TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.bold),
+                                   ),
+                                 ),
+                               ),
+                               Padding(
+                                 padding: EdgeInsets.only(top: 15, left: 5),
+                                 child: Container(
+                                   padding: EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
+                                   decoration: BoxDecoration(
+                                     border: Border.all(
+                                         color: Colors.grey
+                                     ),
+                                     borderRadius: BorderRadius.all(Radius.circular(20)),
+                                     //color: Color(0xFFFFF8EB)
+                                   ),
+                                   child: Text("This Week",
+                                     style: TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.bold),
+                                   ),
+                                 ),
+                               ),
+                               Padding(
+                                 padding: EdgeInsets.only(top: 15, left: 5),
+                                 child: Container(
+                                   padding: EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
+                                   decoration: BoxDecoration(
+                                     border: Border.all(
+                                         color: Colors.grey
+                                     ),
+                                     borderRadius: BorderRadius.all(Radius.circular(20)),
+                                     //color: Color(0xFFFFF8EB)
+                                   ),
+                                   child: Text("This Month",
+                                     style: TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.bold),
+                                   ),
+                                 ),
+                               )
+                             ],
+                           ),
+                        // Expanded(
+                        //   child: ListView.builder(
+                        //       scrollDirection: Axis.horizontal,
+                        //       padding: const EdgeInsets.all(10),
+                        //       itemCount: name.length,
+                        //       shrinkWrap: true,
+                        //       itemBuilder: (BuildContext context, int index) {
+                        //         return
+                        //          Row(
+                        //               mainAxisAlignment: MainAxisAlignment.start,
+                        //               children: [
+                        //                 Align(
+                        //                   alignment: Alignment.topLeft,
+                        //                   child:Container(
+                        //                     alignment: Alignment.topCenter,
+                        //                     decoration: BoxDecoration(
+                        //                         border: Border.all(
+                        //                           color: Colors.grey,
+                        //                           width: 0.5,
+                        //                         ),
+                        //                         borderRadius: BorderRadius.all(Radius.circular(15))
+                        //                     ),
+                        //                     margin: EdgeInsets.only(left: 15, right: 10),
+                        //                     padding: EdgeInsets.only(top: 5, left: 15, right: 15, bottom: 5),
+                        //                     height: 25,
+                        //                     child: Text('${name[index]}'),
+                        //                   )
+                        //                 )
+                        //               ],
+                        //
+                        //           );
+                        //       }
+                        //   ),
+                        // ),
+                         ),
+                       Expanded(
+                         child:  ListView.builder(
+                           shrinkWrap: true,
+                             scrollDirection: Axis.vertical,
+                             padding: const EdgeInsets.all(15),
+                             itemCount: 5,
+                             //itemExtent: 100,
+                             itemBuilder: (BuildContext context, int index) {
+                               return Container(
+                                   decoration: BoxDecoration(
+                                       border: Border.all(
+                                         color: Colors.grey,
+                                         width: 0.5,
+                                       ),
+                                       borderRadius: BorderRadius.all(Radius.circular(10))
+                                   ),
+                                   margin: EdgeInsets.only(bottom: 15, top: 10),
+                                   //color: Colors.amber[colorCodes[index]],
+                                   child:  Column(
+                                     children: [
+                                       Row(
+                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                         children: [
+                                           Padding(padding: EdgeInsets.only(top: 17, left: 10),
+                                             child: Text('Customer Name',
+                                               style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                             ),
+                                           ),
+                                           Padding(padding: EdgeInsets.only(top: 17, right: 10),
+                                             child: Text('Today',
+                                               style: TextStyle(fontSize: 12, color: Colors.grey),),
+                                           ),
+                                         ],
+                                       ),
+                                       Row(
+                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                         children: [
+                                           Padding(padding: EdgeInsets.only(top: 10, left: 10, bottom: 10),
+                                             child: Text('Neeladri Main Road, HBR layout, ban...',
+                                                 style: TextStyle(fontSize: 12, color: Colors.grey)),
+                                           ),
+                                           Padding(padding: EdgeInsets.only(top: 10, right: 10),
+                                             child: Text('12:30PM ',
+                                               style: TextStyle(fontSize: 12,),
+                                             ),
+                                           ),
+                                         ],
+                                       ),
+                                       Divider(
+                                         indent: 10,
+                                         endIndent: 10,
+                                       ),
+                                       Row(
+                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                         children: [
+                                           Container(
+                                             margin: EdgeInsets.only(left: 10, bottom: 5),
+                                             //height: 30,
+                                             //width: 100,
+                                             color: Color(0xFFFFF2E9),
+                                             child:
+                                             Padding(
+                                               padding: EdgeInsets.only(top: 5, left: 5, right: 5, bottom: 5),
+                                               child: Text("Occassion",
+                                                 style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.orange),
+                                               ),
+                                             ),
+                                           ),
 
-                            Padding(
-                              padding: EdgeInsets.only(top: 20, left: 15, right: 15),
-                              child: Container(
-                                //height: MediaQuery.of(context).size.height/5.5,
-                                //width: MediaQuery.of(context).size.width/1,
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.grey,
-                                      width: 0.5,
-                                    ),
-                                    borderRadius: BorderRadius.all(Radius.circular(10))
-                                ),
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 10, left: 13),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text("Customer Name",
-                                            style: TextStyle( fontSize: 14, fontWeight:FontWeight.bold),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(right: 10),
-                                            child: Text("Today", style: TextStyle(fontSize:12,color: Colors.grey),),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 10),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Padding(
-                                            padding: EdgeInsets.only(left: 13),
-                                            child: Text("Usmanpura, Ahmedabad, Gujarat",style: TextStyle(fontSize:12,color: Colors.grey)),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(right: 10),
-                                            child: Text("12:30 PM", style: TextStyle(fontSize:12,color: Colors.black),),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 13, right: 13, top: 5),
-                                      child: Divider(
-                                        color: Colors.grey,
-                                        thickness: 0.5,
-                                      ),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsets.only(left: 10,),
-                                          child: Image.asset("assets/images/img.png",
-                                            height: MediaQuery.of(context).size.height/17,
-                                            width: MediaQuery.of(context).size.width/5,
-                                          ),
-                                        ),
-
-                                        IconButton(
-                                            icon: Icon(Icons.arrow_forward_ios_outlined, size: 20, color: Colors.black,),
-                                            onPressed: () {  Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                    builder: (context) => Occassion())); }
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-
-                            Padding(
-                              padding: EdgeInsets.only(top: 20, left: 15, right: 15),
-                              child: Container(
-                                //height: MediaQuery.of(context).size.height/5.5,
-                                //width: MediaQuery.of(context).size.width/1,
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.grey,
-                                      width: 0.5,
-                                    ),
-                                    borderRadius: BorderRadius.all(Radius.circular(10))
-                                ),
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 10, left: 13),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text("Customer Name",
-                                            style: TextStyle( fontSize: 14, fontWeight: FontWeight.bold),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(right: 10),
-                                            child: Text("Today", style: TextStyle(fontSize:12,color: Colors.grey),),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 10),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Padding(
-                                            padding: EdgeInsets.only(left: 13),
-                                            child: Text("Usmanpura, Ahmedabad, Gujarat",style: TextStyle(fontSize:12,color: Colors.grey)),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(right: 10),
-                                            child: Text("12:30 PM", style: TextStyle(fontSize:12,color: Colors.black),),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 13, right: 13, top: 5),
-                                      child: Divider(
-                                        color: Colors.grey,
-                                        thickness: 0.5,
-                                      ),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsets.only(left: 10,),
-                                          child: Image.asset("assets/images/img.png",
-                                            height: MediaQuery.of(context).size.height/17,
-                                            width: MediaQuery.of(context).size.width/5,
-                                          ),
-                                        ),
-
-                                        IconButton(
-                                            icon: Icon(Icons.arrow_forward_ios_outlined, size: 20, color: Colors.black,),
-                                            onPressed: () {  Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                    builder: (context) => Accepted())); }
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-
-                            Padding(
-                              padding: EdgeInsets.only(top: 20, left: 15, right: 15),
-                              child: Container(
-                                //height: MediaQuery.of(context).size.height/5.5,
-                                //width: MediaQuery.of(context).size.width/1,
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.grey,
-                                      width: 0.5,
-                                    ),
-                                    borderRadius: BorderRadius.all(Radius.circular(10))
-                                ),
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 10, left: 13),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text("Customer Name",
-                                            style: TextStyle( fontSize: 14, fontWeight: FontWeight.bold),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(right: 10),
-                                            child: Text("Today", style: TextStyle(fontSize:12,color: Colors.grey),),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 10),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Padding(
-                                            padding: EdgeInsets.only(left: 13),
-                                            child: Text("Usmanpura, Ahmedabad, Gujarat",style: TextStyle(fontSize:12,color: Colors.grey)),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(right: 10),
-                                            child: Text("12:30 PM", style: TextStyle(fontSize:12,color: Colors.black),),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 13, right: 13, top: 0),
-                                      child: Divider(
-                                        color: Colors.grey,
-                                        thickness: 0.5,
-                                      ),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsets.only(left: 10,),
-                                          child: Image.asset("assets/images/img.png",
-                                            height: MediaQuery.of(context).size.height/17,
-                                            width: MediaQuery.of(context).size.width/5,
-                                          ),
-                                        ),
-
-                                        IconButton(
-                                            icon: Icon(Icons.arrow_forward_ios_outlined, size: 20, color: Colors.black,),
-                                            onPressed: () {  Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                    builder: (context) => Accepted())); }
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-
-                            Padding(
-                              padding: EdgeInsets.only(top: 20, left: 15, right: 15, bottom: 15),
-                              child: Container(
-                                //height: MediaQuery.of(context).size.height/5.5,
-                                //width: MediaQuery.of(context).size.width/1,
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.grey,
-                                      width: 0.5,
-                                    ),
-                                    borderRadius: BorderRadius.all(Radius.circular(10))
-                                ),
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 10, left: 13),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text("Customer Name",
-                                            style: TextStyle( fontSize: 14, fontWeight: FontWeight.bold),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(right: 10),
-                                            child: Text("Today", style: TextStyle(fontSize:12,color: Colors.grey),),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 10),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Padding(
-                                            padding: EdgeInsets.only(left: 13),
-                                            child: Text("Usmanpura, Ahmedabad, Gujarat",style: TextStyle(fontSize:12,color: Colors.black)),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(right: 10),
-                                            child: Text("12:30 PM", style: TextStyle(fontSize:12,color: Colors.grey),),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 13, right: 13, top: 5),
-                                      child: Divider(
-                                        color: Colors.grey,
-                                        thickness: 0.5,
-                                      ),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsets.only(left: 10,),
-                                          child: Image.asset("assets/images/occassion.png",
-                                            height: MediaQuery.of(context).size.height/17,
-                                            width: MediaQuery.of(context).size.width/5,
-                                          ),
-                                        ),
-
-                                        IconButton(
-                                            icon: Icon(Icons.arrow_forward_ios_outlined, size: 20, color: Colors.black,),
-                                            onPressed: () {  Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                    builder: (context) => Occassion())); }
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        )
+                                           IconButton(
+                                               icon: Icon(Icons.arrow_forward_ios_outlined, size: 16, color: Colors.black,),
+                                               onPressed: () {
+                                                 Navigator.of(context).push(
+                                                     MaterialPageRoute(
+                                                         builder: (context) => Occassion()));
+                                               }
+                                           )
+                                         ],
+                                       ),
+                                     ],
+                                   )
+                               );
+                             }
+                         ),
+                       )
                            ]
                     ),
-              ),
+
 
                             Container(
                                 alignment: Alignment.bottomLeft,
